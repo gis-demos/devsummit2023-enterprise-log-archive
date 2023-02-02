@@ -24,28 +24,25 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # ecr public is currently us-east-1 specific https://stackoverflow.com/a/69274999
           aws-region: us-east-1
 
-      - name: Login to Amazon ECR Public
-        id: login-ecr-public
+      - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry-type: public
 
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
-          # update with your ecr tag
+          # update with your ecr uri
           images: |
-            public.ecr.aws/e0k7w5t9/esri-python-api
+            690202643275.dkr.ecr.us-east-1.amazonaws.com/arcgis-python-api-lambda-helloworld
           tags: |
             type=raw,value=latest
             type=sha,format=long
 
       - id: docker_build
-        name: Build image and push to AWS ECS
+        name: Build image and push to AWS ECR
         uses: docker/build-push-action@v2
         with:
           # relative path to the place where source code with Dockerfile is located
