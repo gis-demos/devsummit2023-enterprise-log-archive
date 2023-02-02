@@ -41,7 +41,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - id: docker_build
-        name: Build image and push to GitHub Container Registry
+        name: Build image and push to AWS ECS
         uses: docker/build-push-action@v2
         with:
           # relative path to the place where source code with Dockerfile is located
