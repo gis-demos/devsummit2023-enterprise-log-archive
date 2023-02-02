@@ -49,4 +49,6 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
+          provenance: false
+          platforms: linux/amd64
           push: true
