@@ -26,19 +26,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
 
+      - name: Login to Amazon ECR Public
+        id: login-ecr-public
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
+          # update with your ecr tag
           images: |
             public.ecr.aws/e0k7w5t9/esri-python-api
           tags: |
             type=raw,value=latest
             type=sha,format=long
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
 
       - id: docker_build
         name: Build image and push to AWS ECS
