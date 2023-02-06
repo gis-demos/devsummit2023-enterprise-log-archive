@@ -7,17 +7,17 @@ from typing import Any
 
 def handler(event, context):
     message = 'Hello from AWS Lambda using ArcGIS API for Python ' + arcgis.__version__ + '!'
-    if (context.get('action', 'hello_world') == 'hello_world'):
+    if event.get('action', 'hello_world') == 'hello_world':
         return message
-    if (context.get('action') == 'echo')
-        return context
+    if event.get('action') == 'echo':
+        return event
 
-    gis:GIS = get_gis(context)
+    gis:GIS = get_gis(event)
     logs_by_server = get_logs(gis)
     return logs_by_server
 
-def get_gis(context):
-    GIS(url: context.get('url'), username: context.get('username'), password: context.get('password'))
+def get_gis(event):
+    GIS(url: event.get('url'), username: event.get('username'), password: event.get('password'))
 
 def get_logs(gis):
     admin:PortalAdminManager = gis.admin
