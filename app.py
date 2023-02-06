@@ -17,7 +17,7 @@ def handler(event, context):
     return logs_by_server
 
 def get_gis(event):
-    GIS(url=event.get('url'), username=event.get('username'), password=event.get('password'))
+    return GIS(url=event.get('url'), username=event.get('username'), password=event.get('password'))
 
 def get_logs(gis):
     admin:PortalAdminManager = gis.admin
