@@ -10,7 +10,7 @@ jobs:
   build-and-push:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
-    container: ghcr.io/jtroe/cicd-container-images/conda:latest
+    container: ghcr.io/jtroe/cicd-container-images/arcgis-conda:2.1.0
 
     steps:
       - name: Checkout code
