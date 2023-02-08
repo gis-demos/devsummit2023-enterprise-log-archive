@@ -47,7 +47,7 @@ jobs:
         with:
           # relative path to the place where source code with Dockerfile is located
           context: .
-          file: ./Dockerfile
+          file: ./Lambda.Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           provenance: false
           platforms: linux/amd64

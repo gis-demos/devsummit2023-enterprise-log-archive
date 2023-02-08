@@ -1,0 +1,26 @@
+name: Execute Log Archiver Tool
+
+on:
+  # push:
+  #   branches: [main]
+  # allow it to be run on-demand
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    name: Build Docker image and push to repositories
+    runs-on: ubuntu-latest
+    container: ghcr.io/jtroe/cicd-container-images/conda:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run log archiver tool
+        id: log_tool
+        env:
+          ARCGIS_PORTAL_URL: ${{ secrets.ARCGIS_PORTAL_URL }}
+          ARCGIS_PORTAL_ADMIN: ${{ secrets.ARCGIS_PORTAL_ADMIN }}
+          ARCGIS_PORTAL_ADMIN_PASSWORD: ${{ secrets.ARCGIS_PORTAL_ADMIN_PASSWORD }}
+        run: |
+          python app.py $ARCGIS_PORTAL_URL $ARCGIS_PORTAL_ADMIN $ARCGIS_PORTAL_ADMIN_PASSWORD
