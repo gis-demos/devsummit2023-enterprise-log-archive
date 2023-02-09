@@ -1,7 +1,11 @@
+import json
+import os
+import sys
+
 import arcgis
 from arcgis.gis import GIS
 from arcgis.gis.admin import PortalAdminManager
-
+import boto3
 import concurrent.futures
 import datetime as _dt
 from typing import Any
@@ -60,32 +64,54 @@ def get_logs(gis):
                 servers[server_url].extend(ref[server_url].logs.query(**params))
         return servers
 
+def get_json_bytes(data):
+    """
+    Get JSON as binary for provided input data
+    """
+    json_pretty_utf8_str = json.dumps(data, indent=4).encode('utf-8')
+    return json_pretty_utf8_str
+
+def put_data_to_s3(data):
+    body = get_json_bytes(data)
+    s3_client = boto3.client('s3')
+    s3_client.put_object(
+        Body=body, 
+        Bucket=os.environ.get('AWS_S3_BUCKET', 'devsummit-logging-archive'), 
+        Key=os.environ.get('AWS_S3_LOG_FILENAME', 'log_dump.json'))
+
+
 def handler(event, context):
     """
     aws lambda handler
     """
-    message = 'Hello from AWS Lambda using ArcGIS API for Python ' + arcgis.__version__ + '!'
     if event.get('action', 'hello_world') == 'hello_world':
-        return message
+        return 'Hello from AWS Lambda using ArcGIS API for Python ' + arcgis.__version__ + '!'
     if event.get('action') == 'echo':
         return event
 
     gis:GIS = get_gis(event)
     logs_by_server = get_logs(gis)
+    put_data_to_s3(logs_by_server)
     return logs_by_server
 
-def main():
-    import sys
+def get_main_args():
     args = sys.argv[-3:] # last 3 args
+    # validate args
     try:
         url, username, password = args
-        if not url.startswith('http'): raise ValueError()
+        if not url.startswith('http'): raise ValueError('first parameter must be Url')
     except ValueError:
+        print('Usage: python app.py <url> <username> <password>')
         print('Please pass url, username, password as ordered args')
         sys.exit(1)
+    return args
+    
+
+def main():
+    url, username, password = get_main_args()
     gis:GIS = GIS(url=url, username=username, password=password)
     logs_by_server = get_logs(gis)
-    result = logs_by_server
+    put_data_to_s3(logs_by_server)
     pprint(logs_by_server)
 
 
