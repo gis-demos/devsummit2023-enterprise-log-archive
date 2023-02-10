@@ -3,13 +3,18 @@ name: Execute Log Archiver Tool
 on:
   # push:
   #   branches: [main]
+  # run monthly, every 1st at 7:15am UTC
+  # schedule:
+  #  - cron: '15 7 1 * *'
   # allow it to be run on-demand
   workflow_dispatch:
 
 jobs:
-  build-and-push:
-    name: Build Docker image and push to repositories
+  archive-logs:
+    name: Run log archiver tool against specified ARCGIS_PORTAL_URL secret and archive logs to specified AWS Account
     runs-on: ubuntu-latest
+    # see https://github.com/jtroe/cicd-container-images
+    # and https://github.com/jtroe/cicd-container-images/blob/main/python/arcgis-2.1.0-Conda.Linux.Dockerfile
     container: ghcr.io/jtroe/cicd-container-images/arcgis-conda:2.1.0
 
     steps:
