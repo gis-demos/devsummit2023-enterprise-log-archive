@@ -73,13 +73,15 @@ def get_logs(gis):
                 )
             except:
                 # retry the operation on 504 timeout
-                params = jobs[job]
-                server_url = params.pop('server')
-                print('retrying the query')
-                time.sleep(2)
-                servers[server_url].extend(
-                    ref[server_url].logs.query(**params)
-                )
+                # params = jobs[job]
+                # server_url = params.pop('server')
+                # print('retrying the query')
+
+                # time.sleep(2)
+                # servers[server_url].extend(
+                # ref[server_url].logs.query(**params)
+                # )
+                pass
 
         return servers
 
