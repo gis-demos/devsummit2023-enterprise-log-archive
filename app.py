@@ -93,12 +93,13 @@ def get_json_bytes(data):
 
 
 def put_data_to_s3(data):
+    DEFAULT_FILENAME = f'logs-{int(_dt.datetime.utcnow().timestamp())}.json'
     body = get_json_bytes(data)
     s3_client = boto3.client('s3')
     s3_client.put_object(
-        Body=body,
-        Bucket=os.environ.get('AWS_S3_BUCKET', 'devsummit-logging-archive'),
-        Key=os.environ.get('AWS_S3_LOG_FILENAME', 'log_dump.json'),
+        Body=body, 
+        Bucket=os.environ.get('AWS_S3_BUCKET', 'devsummit-logging-archive'), 
+        Key=os.environ.get('AWS_S3_LOG_FILENAME', DEFAULT_FILENAME)
     )
 
 
