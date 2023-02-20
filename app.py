@@ -103,25 +103,6 @@ def put_data_to_s3(data):
     )
 
 
-def handler(event, context):
-    """
-    aws lambda handler
-    """
-    if event.get('action', 'hello_world') == 'hello_world':
-        return (
-            'Hello from AWS Lambda using ArcGIS API for Python '
-            + arcgis.__version__
-            + '!'
-        )
-    if event.get('action') == 'echo':
-        return event
-
-    gis: GIS = get_gis(event)
-    logs_by_server = get_logs(gis)
-    put_data_to_s3(logs_by_server)
-    return logs_by_server
-
-
 def get_main_args():
     args = sys.argv[-3:]  # last 3 args
     # validate args

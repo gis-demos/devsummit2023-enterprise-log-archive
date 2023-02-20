@@ -10,7 +10,7 @@ To run in GitHub Actions
     - `AWS_SECRET_ACCESS_KEY`
     - `AWS_S3_BUCKET` (else it will default to `devsummit-logging-archive`)
     - Ensure the bucket above is created in your account and the Access Key has write access
-    - `AWS_S3_LOG_FILENAME` (else it will default to `log_dump.json`)
+    - `AWS_S3_LOG_FILENAME` (else it will default to `logs-<timestamp>.json`)
   - ArcGIS:
     - `ARCGIS_PORTAL_URL` (the full url to the Portal web adaptor, e.g. `https://arcgis.myenterprise.net/portal`)
     - `ARCGIS_PORTAL_ADMIN` (Admin username with read access to logs)
